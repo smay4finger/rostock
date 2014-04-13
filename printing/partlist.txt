@@ -1,0 +1,9 @@
+1 x platform.stl
+3 x carriage.stl
+12 x joint.stl
+12 x jaws.stl
+3 x motor_end.stl
+3 x idler_end.stl
+
+1 x penholder.stl
+1 x endstop.stl
