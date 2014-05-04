@@ -1,9 +1,9 @@
 $fn = 100;
 $fa = 0.1;
 
-baseHeight = 1;
-spacerHeight = 4;
-boltHeight = 3;
+baseHeight = 4;
+spacerHeight = 2;
+boltHeight = 1;
 
 
 mountingBolts = [
@@ -18,35 +18,38 @@ mountingHoles = [
     [96.52,  2.54, 0],
 ];
 
-// RAMPS mount
 c1h = baseHeight + spacerHeight;
 c2h = baseHeight + spacerHeight + boltHeight;
 
-translate([-10, 4.5, 0]) {
-    for ( p = mountingHoles) {
-        translate(p) difference() {
-            cylinder(h=c1h, r=3);
-            cylinder(h=c1h, r=1.5);
+difference() {
+    union() {
+        // RAMPS mount
+
+        translate([-8, 5.9, 0]) {
+            for ( p = mountingHoles) {
+                translate(p) difference() {
+                    cylinder(h=c1h, r1=5, r2=2.5);
+                    cylinder(h=c1h, r=1.4);
+                }
+            }
+            for ( p = mountingBolts) {
+                translate(p) cylinder(h=c1h, r1=5, r2=2.5);
+                translate(p) cylinder(h=c2h, r=1.0);
+            }
+        }
+
+        cube(size=[110,64.8,baseHeight]);
+        cube(size=[110, 2.4, 10]);
+        translate([0, 62.4, 0]) cube(size=[110, 2.4, 10]);
+        translate([107.6, 0, 0]) cube(size=[2.4, 64.8, 10]);
+    }
+    translate([-8, 5.9, -1]) {
+        for ( p = mountingHoles) {
+            translate(p) difference() {
+                cylinder(h=10, r=1.4);
+            }
         }
     }
-    for ( p = mountingBolts) {
-        translate(p) cylinder(h=c1h, r=2.6);
-        translate(p) cylinder(h=c2h, r=1.5);
-    }
+    translate([108.8, 32.4, 30]) sphere(r=28);
 }
 
-// Fan Mount
-module mountBracket() {
-    difference() {
-        cube(size=[2.4, 12.4, 10]);
-        translate([-1, 5, 5])rotate([0, 90, 0])
-            cylinder(r=2, h=4);
-    }
-    translate([12.4, 10, 0]) rotate([90, 0, 180])
-        linear_extrude(height=2.4) polygon([[0, 0], [10, 0], [10, 10]]);
-}
-
-translate([110, 0, 0]) mirror() mountBracket();
-translate([110, 60, 0]) rotate([0, 0, 180]) mountBracket();
-
-cube(size=[110,60,0.10]);
